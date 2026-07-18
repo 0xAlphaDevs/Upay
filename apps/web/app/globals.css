@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 97%;
+    --foreground: 270 17% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 270 17% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 270 17% 11%;
+    --primary: 270 43% 43%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 270 24% 92%;
+    --secondary-foreground: 270 17% 11%;
+    --muted: 270 20% 95%;
+    --muted-foreground: 270 8% 53%;
+    --accent: 270 20% 95%;
+    --accent-foreground: 270 17% 11%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 270 24% 92%;
+    --input: 270 24% 92%;
+    --ring: 270 43% 43%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-geist-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+@keyframes upf {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-7px); }
+}
+@keyframes pop {
+  0%   { transform: scale(.4); opacity: 0; }
+  60%  { transform: scale(1.12); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.anim-upf        { animation: upf .6s ease both; }
+.anim-upf-delay  { animation: upf .7s ease .1s both; }
+.anim-floaty     { animation: floaty 6s ease-in-out infinite; }
+
+.upay-hero-btn {
+  width: 100% !important;
+  margin-top: 16px !important;
+  background: #6B3FA0 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 15px !important;
+  font-family: var(--font-geist-sans), system-ui, sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  letter-spacing: -0.01em !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 9px !important;
+  box-shadow: 0 1px 2px rgba(107,63,160,.4), 0 12px 24px rgba(107,63,160,.32) !important;
+  transition: background 0.15s !important;
+  min-height: unset !important;
+}
+.upay-hero-btn:hover:not(:disabled) { background: #5A3488 !important; }
+.upay-hero-btn:disabled { background: #5A3488 !important; cursor: not-allowed !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
