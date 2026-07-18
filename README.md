@@ -52,6 +52,7 @@ The merchant sets their settlement token and chain once. Every payment lands exa
 ## Links
 
 - Deployed URL: [tryupay.xyz](https://tryupay.xyz)
+- SDK : [@alphadevs_labs/upay-sdk](https://www.npmjs.com/package/@alphadevs_labs/upay-sdk)
 - Demo Store: [demo.tryupay.xyz](https://demo.tryupay.xyz)
 - Demo Video: _<!-- paste demo video URL here -->_
 - Presentation: [https://canva.link/607negv86vgh2kc](https://canva.link/607negv86vgh2kc)
