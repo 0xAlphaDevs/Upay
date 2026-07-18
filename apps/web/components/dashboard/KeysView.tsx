@@ -1,12 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import { C, CHAINS } from "@/lib/constants";
 import type { MerchantSession } from "@/lib/types";
 import { CopyBtn } from "./primitives";
 
-export function KeysView({ session }: { session: MerchantSession }) {
-  const pkDisplay = session.publishableKey ?? session.publishableKeyPrefix ?? "pk_live_…";
+function maskKey(key: string): string {
+  if (key.length <= 16) return key;
+  return `${key.slice(0, 12)}${"•".repeat(16)}${key.slice(-4)}`;
+}
 
+export function KeysView({ session }: { session: MerchantSession }) {
+  const [revealed, setRevealed] = useState(false);
+  const pkDisplay = session.publishableKey ?? session.publishableKeyPrefix ?? "pk_live_…";
+  const pkShown = revealed ? pkDisplay : maskKey(pkDisplay);
+
+  // Copying always uses the real key — masking is display-only.
   const reactSnippet = `<UPayButton\n  apiKey="${pkDisplay}"\n  amount="40"\n  token="${session.settlementToken}"\n  chain="${session.settlementChain}"\n/>`;
 
   return (
@@ -44,8 +53,16 @@ export function KeysView({ session }: { session: MerchantSession }) {
               <span style={{ fontWeight: 500, fontSize: 11, color: C.greenDark, background: C.greenBg, padding: "3px 8px", borderRadius: 5 }}>Safe in client</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, background: "#F8F6FC", border: "1px solid #EEE9F6", borderRadius: 9, padding: "11px 14px" }}>
-              <code style={{ fontFamily: "var(--font-geist-mono)", fontWeight: 500, fontSize: 13, color: C.purpleHover, wordBreak: "break-all" }}>{pkDisplay}</code>
-              <CopyBtn text={pkDisplay} />
+              <code style={{ fontFamily: "var(--font-geist-mono)", fontWeight: 500, fontSize: 13, color: C.purpleHover, wordBreak: "break-all" }}>{pkShown}</code>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+                <button
+                  onClick={() => setRevealed((r) => !r)}
+                  style={{ background: "none", border: "none", fontWeight: 500, fontSize: 12, color: C.muted, cursor: "pointer", padding: "4px 6px" }}
+                >
+                  {revealed ? "Hide" : "Show"}
+                </button>
+                <CopyBtn text={pkDisplay} />
+              </div>
             </div>
           </div>
 
@@ -80,8 +97,9 @@ export function KeysView({ session }: { session: MerchantSession }) {
             </div>
             <pre
               style={{ margin: 0, background: C.codeBg, borderRadius: 10, padding: 16, fontFamily: "var(--font-geist-mono)", fontWeight: 500, fontSize: 13, lineHeight: 1.8, color: "#D8D2E2", overflowX: "auto" }}
-              dangerouslySetInnerHTML={{ __html:
-                `<span style="color:#8B82A0">&lt;</span><span style="color:#E89BD0">UPayButton</span>\n  apiKey=<span style="color:#7FD6A6">"${pkDisplay}"</span>\n  amount=<span style="color:#7FD6A6">"40"</span>\n  token=<span style="color:#7FD6A6">"${session.settlementToken}"</span>\n  chain=<span style="color:#7FD6A6">"${session.settlementChain}"</span>\n<span style="color:#8B82A0">/&gt;</span>`
+              dangerouslySetInnerHTML={{
+                __html:
+                  `<span style="color:#8B82A0">&lt;</span><span style="color:#E89BD0">UPayButton</span>\n  apiKey=<span style="color:#7FD6A6">"${pkShown}"</span>\n  amount=<span style="color:#7FD6A6">"40"</span>\n  token=<span style="color:#7FD6A6">"${session.settlementToken}"</span>\n  chain=<span style="color:#7FD6A6">"${session.settlementChain}"</span>\n<span style="color:#8B82A0">/&gt;</span>`
               }}
             />
           </div>

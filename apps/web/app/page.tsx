@@ -46,7 +46,7 @@ function HeroPayButton() {
     <UPayButton
       apiKey={PK}
       baseUrl={BASE_URL}
-      amount="9"
+      amount="0.01"
       token="USDC"
       chain="base"
       metadata={{ productId: "aurora-hoodie", storeName: "Pixel Threads" }}
