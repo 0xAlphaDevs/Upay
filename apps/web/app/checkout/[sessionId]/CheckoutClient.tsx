@@ -60,7 +60,7 @@ export function CheckoutClient({ sessionId }: { sessionId: string }) {
         setPayerAddress(address);
         setPayerEmail(info.email ?? "");
       }
-    }).catch(() => {});
+    }).catch(() => { });
   }, [magic]);
 
   const connectWallet = useCallback(async () => {
@@ -85,7 +85,7 @@ export function CheckoutClient({ sessionId }: { sessionId: string }) {
 
   const switchAccount = useCallback(async () => {
     if (!magic) return;
-    await magic.user.logout().catch(() => {});
+    await magic.user.logout().catch(() => { });
     setPayerAddress("");
     setPayerEmail("");
     setBalance(null);
@@ -210,20 +210,45 @@ export function CheckoutClient({ sessionId }: { sessionId: string }) {
     }
   }, [session, payerAddress, sessionId, magic, balance, refreshBalance]);
 
-  const copyAddress = useCallback(() => {
+  const copyToClipboard = useCallback(async (text: string): Promise<boolean> => {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // Clipboard API is blocked (e.g. embedded in an iframe without
+      // clipboard-write permission) — fall back to the legacy method.
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      } catch {
+        return false;
+      }
+    }
+  }, []);
+
+  const copyAddress = useCallback(async () => {
     if (!payerAddress) return;
-    navigator.clipboard.writeText(payerAddress);
+    const ok = await copyToClipboard(payerAddress);
+    if (!ok) return;
     setAddressCopied(true);
     setTimeout(() => setAddressCopied(false), 2000);
-  }, [payerAddress]);
+  }, [payerAddress, copyToClipboard]);
 
-  const copyTx = useCallback(() => {
+  const copyTx = useCallback(async () => {
     const hash = txHashes.find((h) => h.length === 66) ?? txHashes[0];
     if (!hash) return;
-    navigator.clipboard.writeText(hash);
+    const ok = await copyToClipboard(hash);
+    if (!ok) return;
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }, [txHashes]);
+  }, [txHashes, copyToClipboard]);
 
   // ── Layouts ────────────────────────────────────────────────────────────────
 
@@ -434,8 +459,8 @@ export function CheckoutClient({ sessionId }: { sessionId: string }) {
 
       {/* Trust signals */}
       <div className="space-y-1.5 text-sm text-muted-foreground">
-        <TrustRow text="Pay from any chain, any token — no bridging" />
-        <TrustRow text="Non-custodial — funds go wallet-to-wallet" />
+        <TrustRow text="Pay from any chain, any token, no bridging" />
+        <TrustRow text="Non-custodial, funds go wallet-to-wallet" />
         <TrustRow text="Powered by Particle Universal Accounts" />
       </div>
 
