@@ -1,0 +1,43 @@
+{
+  "name": "@alphadevs_labs/upay-sdk",
+  "version": "0.0.2",
+  "description": "UPay SDK — UPayButton React component and imperative client",
+  "license": "MIT",
+  "homepage": "https://tryupay.xyz",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0xyshv/upay"
+  },
+  "keywords": ["crypto", "checkout", "payments", "web3", "stablecoin", "sdk"],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.3"
+  }
+}
