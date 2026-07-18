@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+dist/
+out/
+
+# Environment files — never commit secrets
+.env
+.env.local
+.env.*.local
+!.env.local.example
+
+# Turbo
+.turbo/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
+
+
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Project docs (root only)
+idea.md
+brand.md
+Upay-brief.md
+architecture.svg
+SUBMISSION-FILES.md
